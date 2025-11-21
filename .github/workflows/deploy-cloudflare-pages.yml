@@ -1,0 +1,25 @@
+name: Deploy static site to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main    # change this if your default branch is not "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # If index.html is in the root of the repo, the directory is "./"
+      # If it's inside a folder (for example "site"), change to "./site"
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ secrets.CLOUDFLARE_PAGES_PROJECT }}
+          directory: ./    # folder that contains index.html
